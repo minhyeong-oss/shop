@@ -1,0 +1,19 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "outputDirectory": null,
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "views/**"
+    }
+  },
+  "rewrites": [
+    { "source": "/", "destination": "/api/index.js" },
+    { "source": "/index.html", "destination": "/api/index.js" },
+    { "source": "/products/:id", "destination": "/api/index.js" },
+    { "source": "/robots.txt", "destination": "/api/index.js" },
+    { "source": "/sitemap.xml", "destination": "/api/index.js" },
+    { "source": "/llms.txt", "destination": "/api/index.js" },
+    { "source": "/api/payments/confirm", "destination": "/api/index.js" }
+  ]
+}
