@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>결제 처리 중 - 토스 쇼핑몰</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .result-box { max-width: 480px; margin: 4rem auto; padding: 2rem; background: #fff; border-radius: 12px; text-align: center; }
+    .result-box h1 { font-size: 1.3rem; }
+    .result-box a { display: inline-block; margin-top: 1rem; color: #0064ff; }
+    pre { text-align: left; background: #f4f4f4; padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.8rem; }
+  </style>
+</head>
+<body>
+  <div class="result-box" id="result-box">
+    <h1>결제 승인 처리 중입니다…</h1>
+  </div>
+
+  <script>
+    (async () => {
+      const box = document.getElementById("result-box");
+      const params = new URLSearchParams(window.location.search);
+      const paymentKey = params.get("paymentKey");
+      const orderId = params.get("orderId");
+      const amount = Number(params.get("amount"));
+
+      // 결제 요청 시 저장한 금액과 리다이렉트로 받은 금액이 같은지 확인합니다.
+      const savedOrder = JSON.parse(sessionStorage.getItem("toss-shop-order") || "null");
+      if (!savedOrder || savedOrder.orderId !== orderId || savedOrder.amount !== amount) {
+        box.innerHTML = `<h1>결제 금액이 일치하지 않습니다.</h1><a href="/">홈으로 돌아가기</a>`;
+        return;
+      }
+
+      try {
+        const response = await fetch("/api/payments/confirm", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ paymentKey, orderId, amount }),
+        });
+        const data = await response.json();
+
+        if (!response.ok) {
+          box.innerHTML = `<h1>결제 승인 실패</h1><pre>${JSON.stringify(data, null, 2)}</pre><a href="/">홈으로 돌아가기</a>`;
+          return;
+        }
+
+        sessionStorage.removeItem("toss-shop-order");
+        box.innerHTML = `
+          <h1>결제가 완료되었습니다 🎉</h1>
+          <p>주문번호: ${data.orderId}</p>
+          <p>결제금액: ₩${Number(data.totalAmount).toLocaleString("ko-KR")}</p>
+          <a href="/">쇼핑 계속하기</a>
+        `;
+      } catch (error) {
+        box.innerHTML = `<h1>오류가 발생했습니다</h1><p>${error.message}</p><a href="/">홈으로 돌아가기</a>`;
+      }
+    })();
+  </script>
+</body>
+</html>

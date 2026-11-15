@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>토스 쇼핑몰</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <h1>TOSS SHOP</h1>
+    <button id="cart-button" type="button">장바구니 <span id="cart-count">0</span></button>
+  </header>
+
+  <main>
+    <section class="product-grid" id="product-grid"></section>
+  </main>
+
+  <aside class="cart-drawer" id="cart-drawer">
+    <div class="cart-head">
+      <h2>장바구니</h2>
+      <button id="cart-close" type="button">×</button>
+    </div>
+    <ul id="cart-list"></ul>
+    <div class="cart-total">
+      <span>총 결제 금액</span>
+      <strong id="cart-total-price">₩0</strong>
+    </div>
+    <button id="checkout-button" type="button">토스페이먼츠로 결제하기</button>
+  </aside>
+  <div class="cart-scrim" id="cart-scrim"></div>
+
+  <!-- 토스페이먼츠 결제 SDK (v2) -->
+  <script src="https://js.tosspayments.com/v2/standard"></script>
+  <script src="main.js"></script>
+</body>
+</html>
