@@ -41,31 +41,13 @@
     alert(`결제 요청 중 오류가 발생했습니다: ${errorCode}${errorMessage}`);
   };
 
-  const products = [
-    { id: "p1", name: "NOCTURNE 01 오 드 퍼퓸 50ML", price: 198000, image: "/images/perfume.jpg" },
-    { id: "p2", name: "클래식 가죽 백팩", price: 89000, image: "/images/backpack.jpg" },
-    { id: "p3", name: "무선 블루투스 스피커", price: 45000, image: "/images/speaker.jpg" },
-    { id: "p4", name: "핸드메이드 세라믹 머그", price: 18000, image: "/images/mug.jpg" },
-  ];
+  const products = JSON.parse($("#product-data").textContent);
 
   const formatWon = (value) => `₩${Number(value).toLocaleString("ko-KR")}`;
 
   const cart = [];
 
-  const grid = $("#product-grid");
-  grid.innerHTML = products
-    .map(
-      (p) => `
-      <div class="product-card">
-        <img src="${p.image}" alt="${p.name}" />
-        <h3>${p.name}</h3>
-        <p class="price">${formatWon(p.price)}</p>
-        <button type="button" data-add="${p.id}">장바구니에 담기</button>
-      </div>`
-    )
-    .join("");
-
-  grid.addEventListener("click", (event) => {
+  $("#product-grid").addEventListener("click", (event) => {
     const id = event.target.dataset.add;
     if (!id) return;
     const product = products.find((p) => p.id === id);
