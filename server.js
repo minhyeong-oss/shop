@@ -6,7 +6,7 @@ const { products } = require("./data/products");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const SITE_URL = (process.env.SITE_URL || "https://shop-rho-three-16.vercel.app").replace(/\/$/, "");
+const SITE_URL = (process.env.SITE_URL || "https://shop-min-715e.vercel.app").replace(/\/$/, "");
 const GOOGLE_SITE_VERIFICATION = process.env.GOOGLE_SITE_VERIFICATION || "";
 
 // 토스페이먼츠 공식 결제창형 샘플의 공개 테스트 시크릿 키입니다.
